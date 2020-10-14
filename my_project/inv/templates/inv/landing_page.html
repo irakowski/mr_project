@@ -1,0 +1,59 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'inv/landing-page.css' %}">
+    <title>{% block title %} VO! Wirtualne biuro {% endblock %}</title>
+</head>
+<body>
+    <!--TOP NAVIGATION BAR-->
+    <nav class="navbar">
+        <!-- LOGO-->
+        <a href="{% url 'landing-page'%}" class="menu-logo">
+            <img src="{% static 'inv/crop.png' %}" alt="logo" width="150" height="110">
+        </a>
+        <!--MENU ITEMS-->
+        <div class=>
+            <ul class="nav justify-content-end"> 
+                <li class="mr-2 nav-item">
+                    <a class="btn btn-success" href="{% url 'login' %}" role="button">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger" href="{% url 'register' %}" role="button">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--BODY OF THE PAGE-->
+    {% block content %}
+    <div class="d-block container-xl">
+        <div class="justify-content-center" id="typewriter">
+            
+        </div>
+    </div>
+    <script>
+    var str ="<h1 class='text-center'> Start Up your <span style='color:red;'>Virtual Office!</span>",
+        i = 0,
+        isTag, 
+        text;
+    
+    (function type() {
+        text = str.slice(0, ++i);
+        if (text === str) return;
+
+        document.getElementById('typewriter').innerHTML = text;
+        
+        var char = text.slice(-1);
+        if ( char === '<') isTag = true;
+        if ( char === '>') isTag = false;
+
+        if (isTag) return type();
+        setTimeout(type, 80);
+    }());
+    </script>
+    {% endblock %}
+</body>
+</html>

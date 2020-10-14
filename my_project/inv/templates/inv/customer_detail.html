@@ -1,0 +1,30 @@
+{% extends 'inv/index.html' %}
+
+{% block content %}
+<div class="container-fliud" id="content">
+  <a type="button" class="btn btn-outline-light" href="{% url 'customers' %}" role="button">Wróc do Listy</a> 
+  <br>
+  <h1>{{ customer.name }}</h1>  
+  <p><strong>{{ customer.name }}</strong></p>
+  <p><strong>NIP:</strong> {{ customer.nip }}<br>
+  <p><strong>Address:</strong> {{ customer.address }}
+    {{ customer.city }} {{ customer.zip_code }}
+    {{ customer.country }}
+  </p>
+  <p><strong>Numer Konta bankowego:</strong> {{customer.bank_account}}</p>
+  <p><strong>REGON</strong> {{customer.regon}}</p>
+  <p><strong>KRS</strong> {{customer.krs}}</p>
+  <p><strong>Osoba reprezentująca:</strong> {{customer.reprezentation}}</p>
+  <p><strong>Kontakt:</strong> {{customer.contact}}</p>
+  <p><strong>Email:</strong> {{customer.email}}</p>
+  <p><strong>Strona WWW</strong> <a href="{{customer.webpage}}">{{customer.webpage}}</a></p>  
+  <br>
+  <a class="btn btn-success" href="{% url 'edit-customer' customer.pk %}" role="button">Edytuj</a>
+  <a class="btn btn-danger" href="{% url 'delete-customer' customer.pk %}" role="button">Usun</a>
+    <h2 class="mt-5">LISTA FAKTUR {{customer.name}}</h2>
+    {% for invoice in invoices%}
+        <li><a href="{% url 'invoice-detail' invoice.pk %}">{{invoice.number}} {{invoice.date_issued}}  ||| {{invoice.type_of_invoice}}</li></a>
+    {% empty %}
+        <p class="text-muted">Nie dodano żadnych faktur</p>
+    {% endfor %}
+{% endblock %}

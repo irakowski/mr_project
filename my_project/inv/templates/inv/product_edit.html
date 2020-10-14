@@ -1,0 +1,71 @@
+{% extends 'inv/index.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <h2>Edytuj produkt: {{ object.name }}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+    {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+    {% endfor %}
+
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="{{form.name.id_for_label}}">Nazwa</label>
+            {% render_field form.name class="form-control" placeholder="ASUS PRIME B450-PLUS"%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            <label for="{{ form.manufacturer.id_for_label }}">Producent</label>
+            {% render_field form.manufacturer class="form-control" placeholder="ASUS" %}
+        </div>
+        <div class="form-group col-md-3">
+            <label for="{{ form.serial_number.id_for_label }}">Kod Producktu</label>
+            {% render_field form.serial_number class="form-control" placeholder="X001"%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+              <label for="{{form.price_net.id_for_label}}">Cena Netto</label>
+              {% render_field form.price_net class="form-control" placeholder="189.88"%}
+        </div>
+        <div class="form-group col-md-2">
+            <label for="{{ form.stock.id_for_label}}">Ilość</label>
+            {% render_field form.stock class="form-control"%}
+        </div>
+
+    </div>
+    <div class="form-row">
+        <div class="form-check">
+            {% render_field form.available class="form-check-input"%}
+            <label for="{{ form.available.id_for_label}}">Dostępność</label>
+        </div>       
+    </div>
+    <br>
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="{{form.description.id_for_label}}">{{form.description.label}}</label>
+            {% render_field form.description class="form-control" placeholder=""%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="{{form.photo.id_for_label}}">{{form.photo.label}}</label>
+            {% render_field form.photo class="form-control-file" placeholder=""%}
+        </div>
+    </div>
+    
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span>Zapisz
+      </button>
+      <a href="{% url 'product-list' %}" class="btn btn-danger">Anuluj</a>
+    </div>
+  </form>
+{% endblock %}

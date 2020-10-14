@@ -1,0 +1,102 @@
+{% extends 'inv/index.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <h2>Nowy Klient</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+    {% if form.errors %}
+        <div class="alert alert-danger"> 
+            {{form.non_field.errors}}
+            {% for error in form.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}    
+   
+
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="{{form.customer_type.id_for_label}}">{{form.customer_type.label}}</label>
+            {% render_field form.customer_type class="form-control"%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            {% render_field form.name class="form-control" placeholder="Nazwa firmy" %}
+        </div>
+        <div class="form-group col-md-3">
+            <label for="{{ form.nip.id_for_label }}">{{ form.nip.label}}</label>
+            {% render_field form.nip class="form-control" placeholder="NIP"%}
+
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="{{form.address.id_for_label}}">{{form.address.label}}</label>
+            {% render_field form.address class="form-control" placeholder="al.KEN 95/28"%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+              <label for="{{form.city.id_for_label}}">{{ form.city.label}}</label>
+              {% render_field form.city class="form-control" placeholder="Warszawa"%}
+        </div>
+        <div class="form-group col-md-1">
+              <label for="{{ form.zip_code.id_for_label}}">{{ form.zip_code.label }}</label>
+                {% render_field form.zip_code class="form-control" placeholder="02-758"%}
+        </div>
+        <div class="form-group col-md-3">
+                <label for="{{ form.country.id_for_label}}">{{ form.country.label }}</label>
+                {% render_field form.country class="form-control" placeholder="Polska"%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="{{form.bank_account.id_for_label}}">{{form.bank_account.label}}</label>
+            {% render_field form.bank_account class="form-control" placeholder=""%}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="{{form.representation.id_for_label}}">{{form.representation.label}}</label>
+            {% render_field form.representation class="form-control" placeholder="John Doe"%}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="{{ form.regon.id_for_label}}">{{ form.regon.label }}</label>
+            {% render_field form.regon class="form-control" placeholder="REGON"%}  
+        </div>
+        <div class="form-group col-md-4">
+            <label for="{{ form.krs.id_for_label}}">{{ form.krs.label }}</label>
+            {% render_field form.krs class="form-control" placeholder="KRS"%} 
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="{{ form.contact.id_for_label}}">{{ form.contact.label }}</label>
+            {% render_field form.contact class="form-control" placeholder="Kontakt"%}  
+        </div>
+        <div class="form-group col-md-3">
+            <label for="{{ form.email.id_for_label}}">{{ form.email.label }}</label>
+            {% render_field form.email class="form-control" placeholder="Email"%}  
+        </div>
+        <div class="form-group col-md-2">
+            <label for="{{ form.webpage.id_for_label}}">{{ form.webpage.label }}</label>
+            {% render_field form.webpage class="form-control" placeholder="www.example.com"%} 
+        </div>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span> Dodaj
+      </button>
+      <a href="{% url 'customers' %}" class="btn btn-danger">Anuluj</a>
+    </div>
+  </form>
+{% endblock %}

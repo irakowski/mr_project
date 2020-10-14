@@ -1,0 +1,62 @@
+{% extends 'inv/index.html' %}
+
+{% block content %}
+    
+    <h1>Wystawione faktury <a class="btn btn-outline-light" href="{% url 'add-vat-invoice' %}" role="button">Dodaj</a></h1>
+    <hr>
+    {% if object_list %}
+    <table class="table table-hover">
+      <thead>
+          <tr class="d-flex">
+            <th class="col-2">Numer faktury </th>
+            <th class="col-2">Typ</th>
+            <th class="col-2">Data wystawienia</th>
+            <th class="col-2">Klient</th>
+            <th class="col-2">Wartość brutto</th>
+            <th class="col-3"></th>
+          </tr>
+        </thead>
+        {% for invoice in object_list %}
+        <tbody>
+           <tr class="d-flex">
+                <td class="col-2"><a href="{% url 'invoice-detail' invoice.pk %}">{{ invoice.number }}</a></td>
+                <td class="col-2">{{invoice.invoice_type}}</td>
+                <td class="col-2">{{ invoice.date_issued|date:"d/m/Y" }}</td>
+                <td class="col-2">{{ invoice.customer }}</td>
+                <td class="col-2">{{ invoice.total_gross_amount }}</td>
+                <td class="col-3">
+                    <a class="btn btn-success" href="{% url 'edit-invoice' invoice.pk %}" role="button">Edytuj</a>
+                    <a class="btn btn-danger" href="{% url 'delete-invoice' invoice.pk %}" role="button">Usun</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="d-block">
+        <p class="mt-5"><h1 class="text-muted">Jeczcze nie dodano żadnych faktur</h1></p>
+    </div>
+    {% endif %}
+
+    {% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-dark mb-4" href="?page=1">Pierwsza</a>
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.previous_page_number }}">Poprzednia</a>
+      {% endif%}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.next_page_number }}">Następna</a>
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.paginator.num_pages }}">Ostatnia</a>
+      {% endif%}
+
+    {% endif%}
+    
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'inv/index.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fliud" id="content">
+    <a type="button" class="btn btn-outline-light" href="{% url 'product-list' %}" role="button">Wróc do Listy</a> 
+    <br>
+    <h1>{{ object.name }}</h1>  
+    <p>{{ object.name }}</p>
+    <p>Opis: {{ object.description }}<br>
+    <p><strong>Cena: {{ object.price_net }} zł</strong></p>
+    <p>Kod produktu: {{ object.serial_number }}</p>
+    <p>Producent: {{ object.manufacturer }}</p>
+    <p><img width="300" height="300" src="{{ product.photo.url }}"></p>
+    <br>
+    <a class="btn btn-success" href="{% url 'edit-product' product.pk %}" role="button">Edytuj</a>
+    <a class="btn btn-danger" href="{% url 'delete-product' product.pk %}" role="button">Usun</a>
+    {% endblock %}

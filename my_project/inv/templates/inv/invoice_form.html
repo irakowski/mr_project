@@ -1,0 +1,86 @@
+{% extends 'inv/index.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <h2>Nowa Faktura</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger"> 
+            {{form.non_field.errors}}
+            {% for error in form.errors %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+		<fieldset>
+            <div class="form-row">
+                <div class="form-group" id="invoice-header" style="width: 70%;padding: 15px;">
+                    <div class="form-group">
+                        <label for="{{form.date_issued.id_for_label}}">Data wystawienia</label>
+						{% render_field form.date_issued class="form-control form-control-sm" autofocus=True%}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{form.order_date.id_for_label}}">Data sprzedaży</label>
+						{% render_field form.order_date class="form-control form-control-sm"%}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{form.payment_option.id_for_label}}">Forma zapłaty</label>
+                        {% render_field form.payment_option class="form-control form-control-sm" initial='Przelew'%}
+					</div>
+                    <div class="form-group">
+                        <label for="{{form.due_date.id_for_label}}">Termin płatności</label>
+						{% render_field form.due_date class="form-control form-control-sm"%}
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: 75px;">
+                    <img src="{{ user.company.logo.url }}" class="rounded float-left" width="250" height="200" alt="...">
+				</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="width: 100%;padding: 15px;">
+                    <label for="{{form.number.id_for_label}}"><h4><strong>Faktura VAT</strong></h4></label>
+					{% render_field form.number class="form-control"%}
+					{{ form.number.errors }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="padding: 15px; width:50%">
+                    <div class="form-group">
+                        <label for="{{form.customer.id_for_label}}">Kupujący</label>
+						{% render_field form.customer class="form-control"%}
+                    </div>
+				</div>
+            </div>
+            <div class="form-row">
+                <label for="{{form.invoice_type.id_for_label}}"></label>
+				{% render_field form.invoice_type initial="VAT" value="VAT"%}
+            </div>
+		</fieldset>
+		<fieldset>
+		  <legend>Szczegóły sprzedaży</legend>
+		  {{ invoice_item_form.management_form }}
+		  {{ invoice_item_form.non_form_errors }}
+            {% for form in invoice_item_form %}
+                {{ form.id }}
+    		    <div class="form-inline {{ invoice_item_form.prefix }}">
+			    {% for field in form.visible_fields %} 
+			        <div class="form-row" style="padding: 15px;width: 100%;">
+				        <div class="form-group" style="width: 10%;">{{ field.label }}</div>
+					    <div class="form-group" style="width: 90%;">{{ field|add_class:"form-control"}}</div>
+                    </div>
+			    {% endfor %}
+				</div>
+		    {% endfor %}
+		</fieldset>
+		<div class="form-group" >
+            <button type="submit" class="btn btn-success">
+              <span class="glyphicon glyphicon-ok"></span> Zapisz
+            </button>
+            <a href="{% url 'invoices' %}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
+

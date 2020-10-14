@@ -1,0 +1,43 @@
+#site-content {
+    background-image: url("content-bc.jpg");
+    color: white;
+    background-size: auto;
+    height: 2500px;
+
+}
+
+#top-navbar {
+    background-image: url("content-bc.jpg");
+    color:white;
+}
+
+#top-right {
+    display:inline-block;
+}
+
+#myNavbar {
+    display: inline-block;
+}
+#logout {
+    display:inline-block;
+}
+#search-form {
+    display:inline-block;
+}
+.content-wrapper {
+
+  transition: left .3s ease, width .3s ease; 
+}
+/* Element | http://127.0.0.1:8000/invoices/add-preorder-invoice/# */
+#invoice-header {
+    width: 70%;
+    padding: 15px;
+  }
+  
+
+footer {
+        background-image: url("content-bc.jpg");
+        color: white; 
+        background-size: auto;   
+}
+

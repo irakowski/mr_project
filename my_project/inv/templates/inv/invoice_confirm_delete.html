@@ -1,0 +1,14 @@
+{% extends 'inv/index.html' %}
+
+{% block content %}
+<div class="container">
+<form method="post">
+    {% csrf_token %}
+    <h4 class="mb-4">Czy napewno chcesz usunąć fakturę "{{ object }}"?</h4>
+    <hr>
+    <button type="submit" class="btn btn-danger">Potwierdż</button>
+    <hr>
+    <a class="btn btn-outline-light" href="{% url 'invoices'%}" role="button">Wróć do Listy</a>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'inv/index.html' %}
+
+{% block content %}
+<div class="container-fliud" id="content">
+    <h1>Ogólna informacją</h1>
+    <br>
+    <ul>
+        <h4>{{ company.name }}</h4>
+        <hr>
+        <h6>NIP: {{ company.nip }}</li></h6>
+        <br>
+        <p>{{ company.address }}</p>
+        <p>{{ company.city }} {{ company.zip }}, {{ company.country }}</p>
+        <hr>
+        {% if invoices%}
+            {% now "n" as current_month %}
+            <p>Faktury w miesącu: {{ current_month }}</p>
+            {% for invoice in invoices %}
+               <p><a href="{% url 'invoice-detail' invoice.pk %}">{{invoice}}</p></a>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Nie dodano żadnych faktur w tym miesącu</p>
+        {% endif %}
+</div>
+{% endblock %}

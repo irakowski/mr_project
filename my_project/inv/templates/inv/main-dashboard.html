@@ -1,0 +1,22 @@
+{% extends 'inv/index.html' %}
+{% block content %}
+  <br>
+  <h2>Welcome, {{user.username}}!</h2>
+  <hr>
+  <div class="row"> 
+      <div class="form-group col-xl-12">
+          <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Szybki dostęp</h4>
+          <p><strong>Załatw sprawę na szybko</strong></p>
+          <div class="d-block inline">
+            <a role="button" href="{% url 'add-customer' %}" class="btn btn-primary">Dodaj Klienta</a>
+            <a role="button" href="{% url 'add-vat-invoice' %}" class="btn btn-success">Wystaw Fakturę VAT</a>
+            <a role="button" href="{% url 'add-product' %}"class="btn btn-info">Dodaj Produkt</a>
+          </div>
+        </div>
+      <div class="container-fluid" id="dashboard">
+
+       </div>
+    </div>
+  </div>
+{% endblock %}

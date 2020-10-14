@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="{% static 'inv/main.css' %}">
+    <link rel="stylesheet" href="{% static 'inv/sidebar-themes.css' %}">
+    <link rel="stylesheet" href="{% static 'inv/content.css'%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'inv/sidebar.js'%}"></script>
+    <title>{% block title %} VO | Dashboard {% endblock%}</title>
+</head>
+<body>
+    <div class="page-wrapper default-theme toggled">
+        <nav id="sidebar" class="sidebar-wrapper">
+          <div class="sidebar-content">
+           <!--<div class="sidebar-brand">
+              <a href="#">Panel Klienta</a>
+            </div>-->
+            <div class="sidebar-header">
+              <div class="user-pic">
+                <a href="{% url 'main' %}"><img class="img-responsive img-rounded" src="{{ user.company.logo.url }}" alt="Logo"></a>
+              </div>
+              <div class="user-info">
+                <span class="user-name">
+                  <strong>{{user.first_name}} {{user.last_name}}</strong>
+                </span>
+                <span class="user-role">{{ user.company.position }}</span>
+                <span class="user-username">{{ user.username }}</span><hr>
+                <span class="user-status">
+                  <i class="fa fa-circle"></i>
+                  <span>Status</span>
+                </span>
+              </div>
+            </div>
+            <!-- sidebar-header  -->
+          <!--  <div class="sidebar-search">
+              <div>
+                <div class="input-group">
+                  <input type="text" class="form-control search-menu" placeholder="Search...">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>-->
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+              <ul>
+                <li class="header-menu">
+                  <span>General</span>
+                </li>
+                <li class="sidebar-dropdown">
+                  <a href="#">
+                    <i class="fa fa-tachometer-alt"></i>
+                    <span>Faktury</span>
+                  </a>
+                  <div class="sidebar-submenu">
+                    <ul>
+                      <li>
+                        <a href="{% url 'invoices' %}">Zobacz liste faktur</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'add-preorder-invoice'%}">Pro-Forma</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'add-vat-invoice'%}">Faktura VAT</a>
+                      </li>
+                      <li>
+                        <a href="">Faktura Korygujaca<span class="badge badge-primary">Comming soon</span></a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="sidebar-dropdown">
+                  <a href="#">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>Produkty</span>
+                  </a>
+                  <div class="sidebar-submenu">
+                    <ul>
+                      <li>
+                        <a href="{% url 'product-list' %}">Lista Produktów</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'add-product'%}">Dodaj Produkt</a>
+                      </li>
+                      <li>
+                        <a href="#">Promocje<span class="badge badge-primary">Comming soon</span></a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="sidebar-dropdown">
+                  <a href="#">
+                    <i class="far fa-gem"></i>
+                    <span>Klienci</span>
+                  </a>
+                  <div class="sidebar-submenu">
+                    <ul>
+                      <li>
+                        <a href="{% url 'customers'%}">Lista Klientów</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'add-customer'%}">Dodaj Klienta</a>
+                      </li>
+                      <li>
+                        <a href="#">Statystyki<span class="badge badge-primary">Comming soon</span></a>
+                      </li>
+                      <!--<li>
+                        <a href="#">Forms</a>
+                      </li>-->
+                    </ul>
+                  </div>
+                </li>
+                <li class="sidebar-dropdown">
+                  <a href="#">
+                    <i class="fa fa-chart-line"></i>
+                    <span>Usługi</span>
+                  </a>
+                  <div class="sidebar-submenu">
+                    <ul>
+                      <li>
+                        <a href="#">Lista Usług</a>
+                      </li>
+                      <li>
+                        <a href="#">Dodaj usługę</a>
+                      </li>
+                      <li>
+                        <a href="#">Modyfikuj usługę</a>
+                      </li>
+                      <li>
+                        <a href="#">Usuń usugę</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="sidebar-dropdown">
+                  <a href="#">
+                    <i class="fa fa-globe"></i>
+                    <span>Ustawienia</span>
+                  </a>
+                  <div class="sidebar-submenu">
+                    <ul>
+                      <li>
+                        <a href="{% url 'company-profile' user.company.slug %}">Profil Firmy</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'update-company-profile' user.company.slug %}">Edytuj profil Firmy</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="header-menu">
+                  <span>Extra</span>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-book"></i>
+                    <span>Documentation</span>
+                    <span class="badge badge-pill badge-primary">Beta</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-calendar"></i>
+                    <span>Calendar</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-folder"></i>
+                    <span>Ustawienia</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- sidebar-menu  -->
+          </div>
+          <!-- sidebar-content  -->
+          <div class="form-group col-md-12">
+            <a id="pin-sidebar" class="btn btn-outline-secondary rounded-0" href="#">
+                <span>Pin</span>
+            </a>
+          </div>
+        </nav>
+        <!-- sidebar-wrapper  -->
+        <main class="page-content">
+          <div class="content-wrapper">
+            <nav class="navbar navbar-dark bg-dark" id="top-navbar">
+                <div class="container-fluid">
+                      <div class="navbar-header">
+                        <a class="navbar-brand" href="#"></a>
+                      </div>
+                      <div class="navbar-dark" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right" id="top-right">
+                            <li id="search-form">
+                                <form class="form-inline" method='GET' action="{% url 'search' %}">
+                                    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                </form>
+                            </li>
+                            <li id="logout">
+                                <a class="btn btn-success" href="{% url 'logout' %}" role="button" ><svg  href="{% url 'logout' %}" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-double-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/></svg>
+                                </a>
+                                
+                            </li>
+                        </ul>
+                      </div>
+                </div>
+            </nav>
+          
+            <div class="container-fluid" id="site-content">   
+              <div class="row">
+                <div class="col-md-8">
+                  {% if messages %}
+                      {% for message in messages %}
+                      <div class="alert alert-{{message.tags}}">
+                          {{message}}
+                      </div>
+                      {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+            {% block content %}    
+            {% endblock %}
+            </div>
+            </div>
+            <footer class="text-center">
+              <div class="mb-0">
+                <small>
+                  © 2020 
+                </small>
+              </div>
+      
+              <div>
+                <a href="" target="_blank">
+                  <img alt="" src="" />
+                </a>
+                <a href="" target="_blank">
+                  <img alt="" src="" />
+                </a>
+              </div>
+            </footer>
+            </div>
+        </div>
+        <!-- page-content" -->
+      </main>
+      <!-- page-wrapper --> 
+    </div>     
+  </body>
+</html>

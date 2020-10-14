@@ -1,0 +1,134 @@
+{% extends 'inv/index.html' %}
+{% load static%}
+{% block content %}
+<div class="d-flex flex-row">
+    {% if user.company.logo %}
+    <div class="p-2 flex-fill">
+      <img src="{{user.company.logo.url}}" class="rounded float-left" width="250" height="200" alt="...">
+    </div>
+    {% else %}
+    <div class="p-2 flex-fill">
+      <img src="{% static 'inv/stamp.jpg'%}" class="rounded float-left" width="250" height="200" alt="...">
+    </div>
+    {% endif %}
+    <div class="p-2 flex-fill">
+      <p>Data wystawienia: {{ invoice.date_issued|date:"d/m/Y" }}</p>
+      <p>Data sprzedaży: {{ invoice.order_date|date:"d/m/Y" }}</p>
+    </div>
+</div>
+
+<div class="mt-5 mb-5 d-flex justify-content-center">
+    <h2 class="text-center"><strong>FAKTURA {{ invoice.invoice_type }} {{invoice.number}}</strong></h2>
+</div>
+<div class="d-flex flex-row">
+    <div class="p-2 flex-fill">
+        <p class="lead"><u>Sprzedawca</u></p>
+        <p>{{ user.company.name }}</p>
+        <p class="m-0">{{ user.company.address }}</p>
+        <p class="m-0">{{ user.company.city }} {{ user.company.zip_code }}</p>
+        <p>NIP {{ user.company.nip }}</p>
+        <p>{{ user.company.bank_account }}</p>
+    </div>
+    <div class="p-2 flex-fill">
+        <p class="lead"><u>Kupujący</u></p>
+        <p>{{ invoice.customer.name }}</p>
+        <p class="m-0">{{ invoice.customer.address }}</p>
+        <p class="m-0">{{ invoice.customer.city }} {{ invoice.customer.zip_code }}</p>
+        <p>NIP {{ invoice.customer.nip }}</p>
+        <p>{{ invoice.customer.bank_account }}</p>
+    </div>
+</div>
+<div class="mt-4 p-2 flex"> 
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">L/p</th>
+            <th scope="col">Nazwa towaru lub usługi</th>
+            <th scope="col">Cena netto [zł]</th>
+            <th scope="col">Ilość</th>
+            <th scope="col">j.m.</th>
+            <th scope="col">Wartość netto [zł]</th>
+            <th scope="col">VAT [%]</th>
+            <th scope="col">Wartość VAT [zł]</th>
+            <th scope="col">Wartość brutto [zł]</th>
+          </tr>
+        </thead>
+        {% for item in invoice_items %}
+        <tbody>
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price_net|floatformat:2}}</td>
+            <td>{{ item.product_quantity }}</td>
+            <td>szt</td>
+            <td>{{ item.total_net|floatformat:2 }} </td>
+            <td>{{ item.get_vat_fee_display }}</td>
+            <td>{{ item.total_vat|floatformat:2 }}</td>
+            <td>{{ item.total_per_products|floatformat:2  }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+<div class="d-flex flex-row">
+    <div class="p-2 flex-fill">
+        <p class="m-1">Forma zapłaty: {{ invoice.payment_option}}</p>
+        <p class="m-1">Termin płatności: {{ invoice.due_date|date:"d/m/Y" }}</p>
+    </div>
+    <div class="p-2 flex-fill">
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Netto</th>
+                <th scope="col">Stawka VAT</th>
+                <th scope="col">Kwota VAT</th>
+                <th scope="col">Brutto</th>
+              </tr>
+            </thead>
+            {% regroup invoice_items by get_vat_fee_display as vat_fee_list %}
+                <tbody>
+                {% for vat_fee in vat_fee_list %}
+                    {% if vat_fee_list|length_is:"1" %}
+                    <tr>
+                        <td>{{ invoice.total_net_amount|floatformat:2 }}</td>
+                        <td>{{ vat_fee.grouper }}</td>
+                        <td>{{ invoice.total_vat_amount|floatformat:2 }}</td>
+                        <td>{{ invoice.total_gross_amount|floatformat:2 }}</td>
+                    </tr>   
+                    {% else %}                   
+                        {% for item in vat_fee.list %}
+                              <tr>
+                                <td>{{ item.total_net }}</td>
+                                <td>{{ item.get_vat_fee_display }}</td>
+                                <td>{{ item.total_vat }}</td>
+                                <td>{{ item.total_per_products }}</td>
+                              </tr>
+                        {% endfor %} 
+                    {% endif %}
+                {% endfor %}  
+
+              <tr>
+                <td colspan="3">Razem do zapłaty</td>
+                <td>{{invoice.total_gross_amount|floatformat:2}}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="mt-5 d-flex flex-row ">
+    <div class="p-2 flex-fill">
+        <p class="m-0 text-center">_____________________________________</p>
+        <p class="m-0 text-center">Podpis Sprzedawcy</p>
+    </div>
+    <div class="p-2 flex-fill">
+        <p class="m-0 text-center">_____________________________________</p>
+        <p class="m-0 text-center">Podpis Kupującego</p>
+    </div>
+</div>
+<div class="mt-5 d-flex">
+    <div class="p-2 flex-fill">
+        <a class="btn btn-success" href="" role="button">Edytuj</a>
+        <a class="btn btn-warning" href="{% url 'pdf' invoice.pk %}" role="button">Pobierz</a>
+    </div>
+</div>
+{% endblock %}

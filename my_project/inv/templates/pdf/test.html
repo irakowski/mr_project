@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+      @font-face {
+      font-family: FreeSans;
+      src: url("/usr/share/fonts/truetype/freefont/FreeSans.ttf");
+      }
+      body {
+      font-family: FreeSans;
+      font-size: 11px;
+      }
+      h1 {
+        font-size: 25px;
+        font-weight: 900;
+        color: darkblue;
+      }
+      .parts-table {
+        /*border: 1px solid grey; */
+        padding: 2px;
+     }
+      #description1 {
+        font-weight: 800;
+        text-decoration-line: underline;
+      }    
+
+      th, td {
+        padding: 4px;
+      }
+      th {
+        background-color: grey;
+      }
+    </style>  
+  </head>
+<body>
+<table>
+  <tr>
+    <td rowspan="2"><img src="http://127.0.0.1:8000{{user.company.logo.url}}" class="rounded float-left" width="150" height="100"></td>
+    <td>Data wystawienia: {{ invoice.date_issued|date:"d/m/Y"}}</td>
+  </tr>
+  <tr>
+    <td>Data sprzedaży: {{ invoice.order_date|date:"d/m/Y"}}</td>
+  </tr>
+</table>
+<br>
+<p style="margin-top: 150pt;"><h1 style="text-align: center; font-weight: bold">FAKTURA {{ invoice.invoice_type }} {{invoice.number}}</h1></p>
+
+<table class="parts-table">
+  <thead class="parts-table">
+    <tr class="parts-table">
+      <th class="parts-table" id="description1" scope="col">Sprzedawca</th>
+      <th class="parts-table" id="description2" scope="col">Kupujący</th>
+    </tr>
+  </thead>
+  <tbody class="parts-table">
+      <tr class="parts-table">
+        <td class="parts-table">{{ user.company.name }}</td>
+        <td class="parts-table">{{ invoice.customer.name }}</td>        
+      </tr>
+      <tr class="parts-table">
+        <td class="parts-table">{{ user.company.address }}</td>
+        <td class="parts-table">{{ invoice.customer.address }}</td>        
+      </tr>
+      <tr class="parts-table">
+        <td class="parts-table">{{ user.company.city}} {{ user.company.zip_code }}</td>
+        <td class="parts-table">{{ invoice.customer.city }} {{ invoice.customer.zip_code }}</td>
+      </tr>
+      <tr class="parts-table">
+        <td class="parts-table">NIP {{ user.company.nip }}</td>
+        <td class="parts-table">NIP {{ invoice.customer.nip}}</td>
+      </tr>
+      <tr class="parts-table">
+        <td class="parts-table">B/A {{ user.company.bank_account }}</td>
+        <td class="parts-table">B/A {{ invoice.customer.bank_account }}</td>
+      </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<legend style="margin-top: 150pt;">Szczegóły sprzedaży</legend>
+<br>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 5%;">L/p</th>
+        <th scope="col" style="width: 30%;">Nazwa towaru lub usługi</th>
+        <th scope="col">Cena netto [zł]</th>
+        <th scope="col" style="width: 5%;">Ilość</th>
+        <th scope="col" style="width: 5%;">j.m.</th>
+        <th scope="col">Wartość netto [zł]</th>
+        <th scope="col">VAT [%]</th>
+        <th scope="col">Wartość VAT [zł]</th>
+        <th scope="col">Wartość brutto [zł]</th>
+      </tr>
+    </thead>
+    {% for item in invoice_items %}
+    <tbody>
+      <tr>
+        <td scope="row" style="width: 5%; text-align:center">{{ forloop.counter }}</td>
+        <td style="width: 30%;">{{ item.product.name }}</td>
+        <td style="text-align:center">{{ item.product.price_net}}</td>
+        <td style="width: 5%; text-align:center">{{ item.product_quantity }}</td>
+        <td style="width: 5%; text-align:center">szt</td>
+        <td style="text-align:center">{{ item.total_net|floatformat:2}} </td>
+        <td style="text-align:center">{{ item.get_vat_fee_display }}</td>
+        <td style="text-align:center">{{ item.total_vat|floatformat:2 }}</td>
+        <td style="text-align:center">{{ item.total_per_products|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+<bR>
+<p class="m-1">Forma zapłaty: {{ invoice.payment_option}}</p>
+<p class="m-1">Termin płatności: {{invoice.due_date|date:"d/m/Y" }}</p>
+<br>
+<table class="table" align="right">
+  <thead>
+    <tr>
+      <th style="width: 15%;">Suma Netto [zł]</th>
+      <th style="width: 15%;">Stawka VAT[%]</th>
+      <th style="width: 15%;">Suma VAT [zł]</th>
+      <th style="width: 15%;">Suma Brutto [zł] </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% regroup invoice_items by get_vat_fee_display as vat_fee_list %}
+                <tbody>
+                {% for vat_fee in vat_fee_list %}
+                    {% if vat_fee_list|length_is:"1" %}
+                    <tr>
+                        <td style="text-align:center">{{ invoice.total_net_amount|floatformat:2 }}</td>
+                        <td style="text-align:center">{{ vat_fee.grouper }}</td>
+                        <td style="text-align:center">{{ invoice.total_vat_amount|floatformat:2 }}</td>
+                        <td style="text-align:center">{{ invoice.total_gross_amount|floatformat:2 }}</td>
+                    </tr>   
+                    {% else %}                   
+                        {% for item in vat_fee.list %}
+                              <tr>
+                                <td style="text-align:center">{{ item.total_net }}</td>
+                                <td style="text-align:center">{{ item.get_vat_fee_display }}</td>
+                                <td style="text-align:center">{{ item.total_vat }}</td>
+                                <td style="text-align:center">{{ item.total_per_products }}</td>
+                              </tr>
+                        {% endfor %} 
+                    {% endif %}
+                {% endfor %}  
+
+    <tr>
+      <td colspan="3">Razem do zapłaty</td>
+      <td style="text-align:center">{{invoice.total_gross_amount}}</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">__________________</th>
+      <th scope="col">__________________</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td style="text-align:center">Podpis Sprzedawcy</td>
+        <td style="text-align:center">Podpis Kupującego</td>        
+      </tr>
+  </tbody>
+</table>
+</body>
+</html>

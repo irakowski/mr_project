@@ -1,0 +1,19 @@
+{% extends 'inv/index.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="alert alert-danger">
+        <p>Niniejszy obiekt jest powiązany z istniająca fakturą. Prosimy o usunięcie faktury najpierw/p>
+            <p>W przypadku jego usunięcia spowoduje to usunięcie wszystkich danych z faktur.
+                Jeżeli nadal chcęsz dokonać tej czynności, wykonaj następujące kroki:
+                <ol>
+                    <li>Wyszukaj wszystkie faktury, powiązane z danym obiektem</li>
+                    <li>Usuń wyszukane faktury</li>
+                    <li>Będziesz móg dokonać usunięcia</li>
+                </ol>
+            </p>
+    </div>
+    <a class="btn btn-outline-light" href="{% url 'main'%}" role="button">Wróć do Panelu Głownego</a>
+</form>
+</div>
+{% endblock %}

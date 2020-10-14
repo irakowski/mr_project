@@ -1,0 +1,23 @@
+{% extends 'inv/index.html' %}
+
+{% block content %}
+<div class="container">
+    <ul>
+        {% for customer in customers %}
+          <li>
+             <a href="{% url 'customer-detail' customer.pk %}">{{ customer }}</a>
+          </li>
+        {% empty%}
+        <p>Brak wyników dla klientów</p>
+        {% endfor %}
+        {% for invoice in invoices %}
+        <li>
+          <a href="{% url 'invoice-detail' invoice.pk %}">{{invoice}}</a>
+        </li>
+        {% empty %}
+        <p>Brak wyników dla Faktur</p>
+      </ul>
+      {% endfor %}
+
+</div>
+{% endblock %}
