@@ -3,6 +3,7 @@ Before running project:
 
     
 Example_env:
+    
     ```SECRET_KEY = 'your-secret-key'
     
     DEBUG = False/True
