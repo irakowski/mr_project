@@ -4,7 +4,7 @@ Before running project:
     
 Example_env:
     
-    ```SECRET_KEY = 'your-secret-key'
+    `SECRET_KEY = 'your-secret-key'
     
     DEBUG = False/True
     
@@ -18,4 +18,4 @@ Example_env:
     
     DB_USER = your-user
     
-    DB_PASSWORD = your-password```
+    DB_PASSWORD = your-password`
