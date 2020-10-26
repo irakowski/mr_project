@@ -1,4 +1,4 @@
-Original work: Copyright (c) 2020 [Michal Rakowski]  
+Original work: Copyright (c) 2020
 
 Modified work: Copyright (c) 2017 Mohamed AZOUAOUI
 https://github.com/azouaoui-med/pro-sidebar-template
